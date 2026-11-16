@@ -126,3 +126,22 @@ resource "aws_security_group" "web" {
     Project = "CloudOps360"
   }
 }
+# CloudOps 360 Database Security Group
+resource "aws_security_group" "database" {
+  name        = "cloudops360-database-sg"
+  description = "Allow PostgreSQL only from Web Security Group"
+  vpc_id      = aws_vpc.main.id
+
+  ingress {
+    description     = "PostgreSQL from Web Security Group"
+    from_port       = 5432
+    to_port         = 5432
+    protocol        = "tcp"
+    security_groups = [aws_security_group.web.id]
+  }
+
+  tags = {
+    Name    = "cloudops360-database-sg"
+    Project = "CloudOps360"
+  }
+}
